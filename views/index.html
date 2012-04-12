@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Diplomata+SC' rel='stylesheet' type='text/css' />
+  <link type="text/css" rel="stylesheet" href="/css/webapp.css" />
+  <link type="text/css" rel="stylesheet" href="/css/style.css" />
+  
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
+</head>
+<body>
+  <div id="header">
+    <h1>Bounty Hunters</h1>
+  </div>
+  
+  <div id="content">
+    <div id="bounty_board" class="column center first">
+      <div class="content-box">
+        <h2>Bounty List</h2>
+        <ul class="listview">
+          <li class="header">
+            <div class="expand">&nbsp;</div>
+            <div class="name">Name (score)</div>
+            <div class="action">&nbsp;</div>
+            <div class="bounty">Bounty</div>
+          </li>
+          
+          {{each(i,player) players}}
+            <li>
+              <div class="expand">[+]</div>
+              <div class="name">${player.name} <span class="score">(${player.points})</span></div>
+              <div class="action">
+                {{if user}}
+                  {{if player.username == user.username}}
+                    <a class="button you">You</a>
+                  {{else}}
+                    {{if player.username == user.target.username}}
+                      <a class="button target" href="#">Target</a>
+                    {{else}}
+                      <a class="button" href="#">Hunt</a>
+                    {{/if}}
+                  {{/if}}
+                {{else}}
+                &nbsp;
+                {{/if}}
+              </div>
+              <div class="bounty">${player.bounty}pt</div>
+            </li>
+            <li class="indent detail">
+              <div class="content">
+                <div class="image">
+                  <img src="${player.profile_photo}" />
+                </div>
+                <div class="name">${player.name}</div>
+                <div class="hunters">${player.numHunters} Hunter{{if player.numHunters != 1}}s{{/if}}</div>
+                <hr class="clear-bar" />
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    
+    
+    
+    <div id="sidebar" class="column right last">
+      
+      {{if user}}
+        <div id="status" class="content-box dark">
+          <h2>Your Status</h2>
+          <div class="profile">
+            <div class="image">
+              <img src="${user.profile_photo}" />
+            </div>
+            <div class="name">${user.name}</div>
+            <div class="score">${user.points} Points</div>
+            <div class="hunters">${user.numHunters} Hunter{{if user.numHunters != 1}}s{{/if}}</div>
+            <hr class="clear-bar" />
+          </div>
+      
+          <h3>Reporting</h3>
+          <form class="reporting inline">
+            <span class="form-el float-label">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" />
+            </span>
+            <span> just killed me!</span>
+        
+            <div class="action">
+              <a class="button red" href="#">Report</a>
+            </div>
+            <hr class="clear-bar" />
+          </form>
+      
+          <h3>Your Target</h3>
+          <div class="target">
+            <div class="image">
+              <img src="${user.target.profile_photo}" />
+            </div>
+            <div class="action">
+              <a class="button red" href="#">Report Kill</a>
+            </div>
+            <div class="name">${user.target.name}</div>
+            <div class="bounty">${user.target.bounty}pt Bounty</div>
+            <div class="hunters">${user.target.numHunters - 1} Other Hunter{{if (user.target.numHunters - 1) != 1}}s{{/if}}</div>
+            <hr class="clear-bar" />
+          </div>
+      
+          <h3>Activity Stream</h3>
+          <ul class="activity">
+            <li>
+              <div class="message">
+                You killed <span class="username">Sam Chalsen</span>
+              </div>
+              <div class="bounty">(+4)</div>
+              <div class="time">12:30pm 4/23</div>
+            </li>
+            <li>
+              <div class="message">
+                You passed a mission
+              </div>
+              <div class="bounty">(+8)</div>
+              <div class="time">1:15pm 4/22</div>
+            </li>
+            <li>
+              <div class="message">
+                <span class="username">Nick Stanford</span> killed you
+              </div>
+              <div class="bounty">(-3)</div>
+              <div class="time">10:00am 4/22</div>
+            </li>
+          </ul>
+        </div>
+        
+      {{else}}
+        <div id="login" class="content-box dark">
+          <form method="POST" action="/login">
+            <div class="form-el fade-label">
+              <label for="login-username">Username</label>
+              <input type="text" id="login-username" name="username" />
+            </div>          
+            <div class="form-el fade-label">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" name="password" />
+            </div>
+            <input type="submit" value="Login" class="button red" />
+          </form>
+        </div>
+      {{/if}}
+    </div>
+    
+    <hr class="clear-bar" />
+  </div>
+  
+  <div id="footer">
+    <div class="message">
+      Product of Currier House
+    </div>
+  </div>
+</body>
+</html>

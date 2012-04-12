@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+  <ul>
+    {{each(i,user) users}}
+      <li>${user.name} (${user.username}) - ${user.email}</li>
+    {{/each}}
+  </ul>
+  <form method="post" action="/addusers">
+    <div>Add a user on each line in the format:</div>
+    <div>Username | Email | Name</div>
+    <label for="users">Users</label>
+    <div>
+      <textarea id="users" name="users" rows="20" cols="100"></textarea>
+    </div>
+    <input type="submit" name="op" value="Create users" />
+  </form>
+  <form method="post" action="/deleteusers">
+    <input type="submit" name="op" value="Delete users" />
+  </form>
+</body>
+</html>

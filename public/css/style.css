@@ -1,0 +1,236 @@
+body {
+  background-color: #cccccc;
+  font-family: Helvetica;
+  min-width: 900px; }
+
+#header {
+  position: relative;
+  z-index: 5;
+  background-image: url("/images/bounty_hunters_header.png");
+  background-repeat: no-repeat;
+  height: 100px;
+  border-bottom: 1px solid black;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.5);
+  background-color: #fafafa; }
+  #header h1 {
+    visibility: hidden; }
+
+#footer {
+  position: relative;
+  clear: both;
+  margin-top: 5px;
+  text-align: center;
+  color: #888888;
+  text-shadow: 0px 1px 0px #eaeaea;
+  font-weight: lighter;
+  font-size: 0.8em; }
+
+.button {
+  padding: 3px;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(255, 255, 255, 0.5)), color-stop(1, transparent));
+  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.5), transparent);
+  background-color: #5bbd5b;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0px -1px 0px #325132;
+  text-align: center;
+  letter-spacing: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0px 0px 6px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: inset 0px 0px 6px rgba(255, 255, 255, 0.3);
+  border-radius: 5px; }
+  .button.red {
+    background-color: #aa0000; }
+  .button:hover {
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(255, 255, 255, 0.4)), color-stop(1, rgba(255, 255, 255, 0.05)));
+    background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.05)); }
+  .button:active {
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0, 0, 0.5)), color-stop(1, rgba(0, 0, 0, 0.1)));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1));
+    box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 0px 1px 0px #325132; }
+  .button.target {
+    background: none;
+    background-color: #732626;
+    box-shadow: none;
+    -moz-box-shadow: none; }
+  .button.you {
+    background: none;
+    background-color: #adad85;
+    color: #333333;
+    text-shadow: 0px 1px 0px #e0e0d1;
+    box-shadow: none;
+    -moz-box-shadow: none; }
+
+#content {
+  padding-right: 350px;
+  overflow: hidden; }
+  #content .column {
+    float: left;
+    position: relative;
+    z-index: 0;
+    padding-bottom: 20000px;
+    margin-bottom: -20000px; }
+    #content .column.center {
+      width: 100%;
+      background-color: #fafafa; }
+    #content .column.right {
+      margin-right: -350px;
+      border-left: 2px solid black;
+      width: 348px;
+      background-color: #333333; }
+    #content .column .content-box {
+      padding: 5px;
+      background-color: #fafafa; }
+      #content .column .content-box.dark {
+        background-color: #444444;
+        color: white;
+        text-shadow: 0px -1px 0px black; }
+        #content .column .content-box.dark > h2 {
+          border-bottom: 1px solid #cccccc; }
+        #content .column .content-box.dark > h3 {
+          font-weight: bold;
+          text-shadow: 0px -1px 0px black;
+          border-top: 1px solid #222222;
+          margin: 15px -5px 0px -5px;
+          padding: 7px 5px;
+          background-color: #222222;
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #222222), color-stop(1, #111111));
+          background-image: -moz-linear-gradient(top, #222222, #111111); }
+      #content .column .content-box > h2 {
+        border-bottom: 1px solid black;
+        padding-bottom: 1px;
+        margin-bottom: 5px;
+        font-family: Gill Sans;
+        font-weight: bold;
+        font-size: 1.2em; }
+
+#bounty_board .header {
+  font-weight: bold; }
+#bounty_board .score {
+  display: inline;
+  color: #666666; }
+#bounty_board .expand, #bounty_board .name, #bounty_board .bounty, #bounty_board .action {
+  display: inline-block; }
+#bounty_board .expand {
+  cursor: pointer;
+  width: 25px;
+  text-align: center; }
+#bounty_board .bounty, #bounty_board .action {
+  float: right; }
+#bounty_board .bounty {
+  width: 100px; }
+#bounty_board .action {
+  width: 100px;
+  text-align: center;
+  float: right;
+  margin: -4px -5px; }
+  #bounty_board .action .button {
+    border-right: none;
+    border-radius: 0; }
+#bounty_board .detail .content {
+  padding-left: 25px; }
+  #bounty_board .detail .content .image {
+    overflow: hidden;
+    width: 60px;
+    height: 60px;
+    float: left;
+    border-radius: 6px;
+    margin-right: 5px;
+    box-shadow: 0px 0px 3px black; }
+  #bounty_board .detail .content .name {
+    font-size: 1.1em;
+    font-weight: bold; }
+  #bounty_board .detail .content .action {
+    float: right;
+    width: 100px; }
+
+#sidebar .profile, #sidebar .target {
+  padding: 5px 0px; }
+  #sidebar .profile .image, #sidebar .target .image {
+    overflow: hidden;
+    width: 60px;
+    height: 60px;
+    float: left;
+    border-radius: 6px;
+    margin-right: 5px;
+    box-shadow: 0px 0px 3px black; }
+  #sidebar .profile .name, #sidebar .target .name {
+    font-size: 1.1em;
+    font-weight: bold; }
+  #sidebar .profile .action, #sidebar .target .action {
+    float: right;
+    width: 100px; }
+
+.activity {
+  margin: 0 -5px -5px -5px; }
+  .activity li {
+    border-top: 1px solid #111111;
+    border-bottom: 1px solid #111111;
+    padding: 4px 5px;
+    background-color: #3f3f3f;
+    margin-bottom: -1px;
+    color: #eeeeee;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3f3f3f), color-stop(1, #333333));
+    background-image: -moz-linear-gradient(top, #3f3f3f, #333333); }
+    .activity li .confirm {
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #777777), color-stop(1, #555555));
+      background-image: -moz-linear-gradient(top, #777777, #555555); }
+    .activity li span {
+      display: inline; }
+    .activity li .message, .activity li .bounty, .activity li .time {
+      display: inline-block;
+      width: auto;
+      float: none; }
+    .activity li .username {
+      font-weight: bold;
+      color: white; }
+    .activity li .time {
+      float: right;
+      font-size: 0.7em;
+      margin-top: 0.3em;
+      text-shadow: none;
+      color: #cccccc; }
+    .activity li .bounty {
+      color: #aaaaaa; }
+
+.form-el {
+  position: relative;
+  margin: 3px 0px; }
+  .form-el.fade-label label {
+    position: absolute;
+    color: #999999;
+    text-shadow: none;
+    z-index: 1;
+    top: 3px;
+    left: 4px; }
+
+form .action {
+  width: 100px;
+  float: right; }
+
+form.inline {
+  margin: 3px 0px; }
+  form.inline > * {
+    display: inline-block; }
+
+form input {
+  outline: none; }
+form input[type=text], form textarea, form input[type=password] {
+  border: 1px solid #222222;
+  border-radius: 3px;
+  font-size: 1em;
+  padding: 2px;
+  width: 200px;
+  display: inline-block;
+  box-shadow: inset 0px 0px 5px black;
+  color: black;
+  outline: none;
+  font-family: Helvetica; }
+  form input[type=text]:focus, form textarea:focus, form input[type=password]:focus {
+    border-width: 2px;
+    padding: 1px; }
+form input[type=submit] {
+  width: 206px; }
