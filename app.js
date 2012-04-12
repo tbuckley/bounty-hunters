@@ -46,7 +46,7 @@ app.post('/login', routes.login);
 app.get('/users', routes.manageusers);
 app.post('/addusers', routes.addusers);
 app.post('/deleteusers', routes.deleteusers);
-
+app.post('/settarget', routes.settarget);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", 

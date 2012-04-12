@@ -37,7 +37,10 @@
                     {{if player.username == user.target.username}}
                       <a class="button target" href="#">Target</a>
                     {{else}}
-                      <a class="button" href="#">Hunt</a>
+                      <form method="post" action="/settarget">
+                        <input type="hidden" name="target_uid" value="${player._id.toHexString()}" />
+                        <input type="submit" class="button" value="Hunt" />
+                      </form>
                     {{/if}}
                   {{/if}}
                 {{else}}

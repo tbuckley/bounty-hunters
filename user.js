@@ -99,7 +99,6 @@ function loadUserData(user, cb) {
     if(err) {
       cb(err);
     } else {
-      console.log(results);
       user.points = results.points;
       user.bounty = Math.ceil(0.25 * results.points);
       user.target = results.target;

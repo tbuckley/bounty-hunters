@@ -129,7 +129,8 @@ body {
   margin: -4px -5px; }
   #bounty_board .action .button {
     border-right: none;
-    border-radius: 0; }
+    border-radius: 0;
+    width: 100%; }
 #bounty_board .detail .content {
   padding-left: 25px; }
   #bounty_board .detail .content .image {
@@ -223,7 +224,6 @@ form input[type=text], form textarea, form input[type=password] {
   border-radius: 3px;
   font-size: 1em;
   padding: 2px;
-  width: 200px;
   display: inline-block;
   box-shadow: inset 0px 0px 5px black;
   color: black;
@@ -232,5 +232,3 @@ form input[type=text], form textarea, form input[type=password] {
   form input[type=text]:focus, form textarea:focus, form input[type=password]:focus {
     border-width: 2px;
     padding: 1px; }
-form input[type=submit] {
-  width: 206px; }
