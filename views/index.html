@@ -70,6 +70,13 @@
       
       {{if user}}
         <div id="status" class="content-box dark">
+          {{if messages}}
+          <ul class="messages">
+            {{each(i,m) messages}}
+            <li>${m}</li>
+            {{/each}}
+          </ul>
+          {{/if}}
           <h2>Your Status</h2>
           <div class="profile">
             <div class="image">
@@ -82,6 +89,16 @@
           </div>
       
           <h3>Reporting</h3>
+          {{if reports}}
+            <ul class="reports">
+            {{each(i,report) reports}}
+              <li>
+                {{html report}}
+                <hr class="clear-bar" />
+              </li>
+            {{/each}}
+            </ul>
+          {{/if}}
           <form id="reporting-form" class="inline" method="post" action="/report-death">
             <span class="form-el fade-label">
               <label for="username">Username</label>
@@ -101,7 +118,10 @@
               <img src="${user.target.profile_photo}" />
             </div>
             <div class="action">
-              <a class="button red" href="#">Report Kill</a>
+              <form method="post" action="/report-kill">
+                <input type="hidden" name="killee_uid" value="${user.target._id.toHexString()}" />
+                <input type="submit" class="button red" name="op" value="Report Kill" />
+              </form>
             </div>
             <div class="name">${user.target.name}</div>
             <div class="bounty">${user.target.bounty}pt Bounty</div>

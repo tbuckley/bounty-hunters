@@ -48,6 +48,8 @@ app.post('/addusers', routes.addusers);
 app.post('/deleteusers', routes.deleteusers);
 app.post('/settarget', routes.settarget);
 app.post('/report-death', routes.report_death);
+app.post('/report-kill', routes.report_kill);
+app.post('/report/:reportid', routes.report);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", 

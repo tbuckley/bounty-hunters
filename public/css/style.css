@@ -148,6 +148,14 @@ body {
     float: right;
     width: 100px; }
 
+#sidebar .messages {
+  margin: 5px;
+  background-color: #ffcccc;
+  color: #cc0000;
+  text-shadow: none;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #cc0000; }
 #sidebar .profile, #sidebar .target {
   padding: 5px 0px; }
   #sidebar .profile .image, #sidebar .target .image {
@@ -165,9 +173,9 @@ body {
     float: right;
     width: 100px; }
 
-.activity {
+.activity, .reports {
   margin: 0 -5px -5px -5px; }
-  .activity li {
+  .activity li, .reports li {
     border-top: 1px solid #111111;
     border-bottom: 1px solid #111111;
     padding: 4px 5px;
@@ -176,25 +184,25 @@ body {
     color: #eeeeee;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3f3f3f), color-stop(1, #333333));
     background-image: -moz-linear-gradient(top, #3f3f3f, #333333); }
-    .activity li .confirm {
+    .activity li .confirm, .reports li .confirm {
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #777777), color-stop(1, #555555));
       background-image: -moz-linear-gradient(top, #777777, #555555); }
-    .activity li span {
+    .activity li span, .reports li span {
       display: inline; }
-    .activity li .message, .activity li .bounty, .activity li .time {
+    .activity li .message, .activity li .bounty, .activity li .time, .reports li .message, .reports li .bounty, .reports li .time {
       display: inline-block;
       width: auto;
       float: none; }
-    .activity li .username {
+    .activity li .username, .reports li .username {
       font-weight: bold;
       color: white; }
-    .activity li .time {
+    .activity li .time, .reports li .time {
       float: right;
       font-size: 0.7em;
       margin-top: 0.3em;
       text-shadow: none;
       color: #cccccc; }
-    .activity li .bounty {
+    .activity li .bounty, .reports li .bounty {
       color: #aaaaaa; }
 
 .form-el {
@@ -234,3 +242,23 @@ form input[type=text], form textarea, form input[type=password] {
   form input[type=text]:focus, form textarea:focus, form input[type=password]:focus {
     border-width: 2px;
     padding: 1px; }
+
+.reports {
+  margin-bottom: 5px; }
+
+.reports li {
+  padding-bottom: 0px;
+  border-bottom: 2px solid #111111; }
+  .reports li .message {
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #333333), color-stop(1, #222222));
+    background-image: -moz-linear-gradient(top, #333333, #222222);
+    padding: 5px;
+    width: 100%; }
+  .reports li form {
+    margin: -5px -7px; }
+    .reports li form input {
+      float: left;
+      width: 50%;
+      border-radius: 0px;
+      border: none;
+      border-left: 1px solid #333333; }

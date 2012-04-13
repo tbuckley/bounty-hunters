@@ -108,6 +108,10 @@ function award(amt, user, msg, cb) {
   });
 }
 
+function addTransaction(trans, cb) {
+  transactions.insert(trans, cb);
+}
+
 function activity(user, cb) {
   var template = _.template(" \
   <li> \
@@ -125,9 +129,13 @@ function activity(user, cb) {
       } else {
         async.map(docs, function(doc, cb) {
           if(doc.type == KILL) {
-            if(doc.killer == user._id) {
+            console.log(doc.killer, user._id, doc.killer == user._id);
+            if(doc.killer.toHexString() == user._id.toHexString()) {
               _user.getById(doc.killee, function(err, killee) {
-                cb(null, "You killed <span class=\"username\">"+killee.name+'</span>');
+                cb(null, template({
+                  message: "You killed <span class=\"username\">"+killee.name+'</span>',
+                  time: dateFormat(new Date(doc.time), "h:MMtt m/dd")
+                }));
               });
             } else {
               _user.getById(doc.killer, function(err, killer) {
@@ -144,4 +152,4 @@ function activity(user, cb) {
 }
 
 expose(initUser, getPoints);
-expose(kill, award, activity);
+expose(kill, award, activity, transferPoints, transferPercentage, addTransaction);

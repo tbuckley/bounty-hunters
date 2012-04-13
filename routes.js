@@ -3,11 +3,29 @@ var _user = require('./user'),
     _ = require('underscore'),
     async = require('async'),
     target = require('./target'),
-    points = require('./points');
+    points = require('./points'),
+    reporting = require('./reporting');
 
 String.prototype.strip = function() {
   return this.replace(/^\s*(.*?)\s*$/, "$1");
 };
+
+function add_message(req, msg) {
+  if(req.session && req.session.messages) {
+    req.session.messages.push(msg);
+    return true;
+  } else if(req.session) {
+    req.session.messages = [msg];
+    return true;
+  } else {
+    return false;
+  }
+}
+function get_messages(req) {
+  var messages = req.session.messages;
+  delete req.session['messages'];
+  return messages;
+}
 
 var ctr = 0;
 function generate_password() {
@@ -38,6 +56,18 @@ exports.index = function(req, res, next) {
       } else {
         cb(null, []);
       }
+    },
+    messages: function(cb) {
+      var m = get_messages(req);
+      console.log("messages", m);
+      cb(null, m);
+    },
+    reports: function(cb) {
+      if(req.user) {
+        reporting.getReports(req.user, cb);
+      } else {
+        cb(null, null);
+      }
     }
   }, function(err, results) {
     res.render('index', results);
@@ -49,7 +79,8 @@ exports.login = function(req, res, next) {
       password = req.param('password');
   _user.getByCredentials(username, password, function(err, user) {
     if(err) {
-      res.render('index', {err: err, user: null});
+      add_message(err);
+      res.redirect("/");
     } else {
       _user.login(req, user, function() {
         res.redirect('/');
@@ -121,17 +152,64 @@ exports.settarget = function(req, res, next) {
 exports.report_death = function(req, res, next) {
   if(req.user) {
     _user.getByUsername(req.param('username'), function(err, killer) {
-      console.log("killer", killer);
       if(err || !killer) {
+        add_message('Error submitting death');
         res.redirect('/');
       } else {
-        points.kill(killer, req.user, function(err) {
+        if(killer.target.username == req.user.username) {
+          points.kill(killer, req.user, function(err) {
+            res.redirect('/');
+          });
+        } else {
+          add_message(req, 'That person is not currently hunting you.');
           res.redirect('/');
-        });
+        }
       }
     });
   } else {
     console.log("not logged in");
+    res.redirect('/');
+  }
+};
+
+exports.report_kill = function(req, res, next) {
+  if(req.user) {
+    _user.getById(req.param('killee_uid'), function(err, killee) {
+      if(err || !killee) {
+        add_message('Error submitting kill');
+        res.redirect('/');
+      } else {
+        if(req.user.target.username == killee.username) {
+          reporting.reportKill(req.user, req.user, killee, function(err) {
+            add_message('Reported kill, awaiting confirmation.');
+            res.redirect('/');
+          });
+        } else {
+          add_message(req, 'You are not currently hunting that person.');
+          res.redirect('/');
+        }
+      }
+    });
+  } else {
+    console.log("not logged in");
+    res.redirect('/');
+  }
+};
+
+exports.report = function(req, res, next) {
+  var id = req.param('reportid'),
+      op = req.param('op');
+  if(op == 'Confirm') {
+    reporting.confirmReport(req.user, id, function(err) {
+      res.redirect('/');
+    });
+  } else if(op == 'Deny') {
+    reporting.cancelReport(req.user, id, function(err) {
+      add_message('Report cancelled');
+      res.redirect('/');
+    });
+  } else {
+    add_message('Invalid command');
     res.redirect('/');
   }
 };
