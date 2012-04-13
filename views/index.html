@@ -35,7 +35,7 @@
                     <a class="button you">You</a>
                   {{else}}
                     {{if player.username == user.target.username}}
-                      <a class="button target" href="#">Target</a>
+                      <a class="button target" href="#">Your Target</a>
                     {{else}}
                       <form method="post" action="/settarget">
                         <input type="hidden" name="target_uid" value="${player._id.toHexString()}" />
@@ -54,7 +54,7 @@
                 <div class="image">
                   <img src="${player.profile_photo}" />
                 </div>
-                <div class="name">${player.name}</div>
+                <div class="name">${player.name} (${player.username})</div>
                 <div class="hunters">${player.numHunters} Hunter{{if player.numHunters != 1}}s{{/if}}</div>
                 <hr class="clear-bar" />
               </div>
@@ -82,15 +82,15 @@
           </div>
       
           <h3>Reporting</h3>
-          <form class="reporting inline">
-            <span class="form-el float-label">
+          <form id="reporting-form" class="inline" method="post" action="/report-death">
+            <span class="form-el fade-label">
               <label for="username">Username</label>
-              <input type="text" id="username" name="username" />
+              <input style="width: 120px" type="text" id="username" name="username" />
             </span>
             <span> just killed me!</span>
         
             <div class="action">
-              <a class="button red" href="#">Report</a>
+              <input type="submit" class="button red" name="op" value="Report" />
             </div>
             <hr class="clear-bar" />
           </form>
@@ -111,27 +111,9 @@
       
           <h3>Activity Stream</h3>
           <ul class="activity">
-            <li>
-              <div class="message">
-                You killed <span class="username">Sam Chalsen</span>
-              </div>
-              <div class="bounty">(+4)</div>
-              <div class="time">12:30pm 4/23</div>
-            </li>
-            <li>
-              <div class="message">
-                You passed a mission
-              </div>
-              <div class="bounty">(+8)</div>
-              <div class="time">1:15pm 4/22</div>
-            </li>
-            <li>
-              <div class="message">
-                <span class="username">Nick Stanford</span> killed you
-              </div>
-              <div class="bounty">(-3)</div>
-              <div class="time">10:00am 4/22</div>
-            </li>
+            {{each(i,act) activity}}
+              {{html act}}
+            {{/each}}
           </ul>
         </div>
         

@@ -1,7 +1,9 @@
-var user = require('./user'),
+var _user = require('./user'),
     database = require('./database'),
     expose = require('./utils').expose(exports),
-    async = require('async');
+    async = require('async'),
+    _ = require('underscore'),
+    dateFormat = require('dateformat');
 
 var INITIAL_POINTS = 4,
     KILL_PERCENT = 0.25;
@@ -47,10 +49,10 @@ function addPoints(amt, user, cb) {
 function transferPoints(amt, src, dst, cb) {
   async.parallel([
     function(cb) {
-      points.update({_id: src._id}, {$inc: {points: -amt}}, cb);
+      points.update({uid: src._id}, {$inc: {points: -amt}}, cb);
     },
     function(cb) {
-      points.update({_id: dst._id}, {$inc: {points: amt}}, cb);
+      points.update({uid: dst._id}, {$inc: {points: amt}}, cb);
     }
   ], function(err) {
     if(err) {
@@ -106,5 +108,40 @@ function award(amt, user, msg, cb) {
   });
 }
 
+function activity(user, cb) {
+  var template = _.template(" \
+  <li> \
+    <div class=\"message\"> \
+      <%= message %> \
+    </div> \
+    <div class=\"time\"><%= time %></div> \
+  </li> \
+  ");
+  transactions.find({$or: [{killer: user._id}, {killee: user._id}]})
+    .sort({time: -1})
+    .toArray(function(err, docs) {
+      if(err) {
+        cb(err);
+      } else {
+        async.map(docs, function(doc, cb) {
+          if(doc.type == KILL) {
+            if(doc.killer == user._id) {
+              _user.getById(doc.killee, function(err, killee) {
+                cb(null, "You killed <span class=\"username\">"+killee.name+'</span>');
+              });
+            } else {
+              _user.getById(doc.killer, function(err, killer) {
+                cb(null, template({
+                  message: "<span class=\"username\">"+killer.name+'</span> killed you',
+                  time: dateFormat(new Date(doc.time), "h:MMtt m/dd")
+                }));
+              });
+            }
+          }
+        }, cb);
+      }
+    });
+}
+
 expose(initUser, getPoints);
-expose(kill, award);
+expose(kill, award, activity);

@@ -211,6 +211,8 @@ body {
 form .action {
   width: 100px;
   float: right; }
+  form .action input[type=submit] {
+    width: 100%; }
 
 form.inline {
   margin: 3px 0px; }
