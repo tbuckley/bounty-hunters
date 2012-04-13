@@ -99,14 +99,19 @@ exports.addusers = function(req, res, next) {
       users = data.split("\n");
   users = _.map(users, function(user) {
     var bits = user.split('|');
-    if(bits.length == 3) {
-      var username = bits[0].strip(),
-          email = bits[1].strip(),
-          name = bits[2].strip();
+    if(bits.length == 5) {
+      var name = bits[0].strip(),
+          nickname = bits[1].strip(),
+          phone = bits[2].strip().replace(/[^0-9\+]/g, ''),
+          email = bits[4].strip();
+      var names = name.split(/[^a-zA-Z]/),
+          username = (_.first(names).strip()[0] + _.last(names).strip()).toLowerCase();
       return {
         username: username,
+        nickname: nickname,
         name: name,
         email: email,
+        phone: phone,
         password: generate_password()
       };
     }
@@ -114,7 +119,7 @@ exports.addusers = function(req, res, next) {
   });
   users = _.compact(users);
   async.forEach(users, function(user, cb) {
-    console.log(user);
+    console.log(user.username +'\t'+ user.password +'\t' + user.email);
     _user.create(user, cb);
   }, function(err) {
     target.randomLoop(function(err) {
@@ -134,10 +139,9 @@ exports.settarget = function(req, res, next) {
   if(req.user) {
     _user.getById(req.param('target_uid'), function(err, doc) {
       if(err || !doc) {
-        console.log("not found...");
+        add_message("ERROR: Target not found...");
         res.redirect('/');
       } else {
-        console.log("Set target:", doc);
         target.setTarget(req.user, doc, function(err) {
           res.redirect('/');
         });

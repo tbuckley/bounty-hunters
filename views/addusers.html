@@ -4,14 +4,18 @@
 </head>
 
 <body>
-  <ul>
+  <ol>
     {{each(i,user) users}}
-      <li>${user.name} (${user.username}) - ${user.email}</li>
+      <li>
+        <div style="font-weight: bold;">${user.name} (${user.username})</div>
+        <div>${user.email}</div>
+        <div>${user.phone}</div>
+      </li>
     {{/each}}
-  </ul>
+  </ol>
   <form method="post" action="/addusers">
     <div>Add a user on each line in the format:</div>
-    <div>Username | Email | Name</div>
+    <div>Name | Nickname | Phone | ??? | Email</div>
     <label for="users">Users</label>
     <div>
       <textarea id="users" name="users" rows="20" cols="100"></textarea>
