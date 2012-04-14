@@ -109,7 +109,6 @@ function getReports(user, cb) {
           }
         });
       }, function(err, reports) {
-        console.log("reports", reports);
         cb(err, reports);
       });
     }

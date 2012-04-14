@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  $('#bounty_board .listview .indent').hide();
+  
   $('.form-el.fade-label').each(function() {
     var $label = $(this).find('label'),
         $field = $(this).find('input');
@@ -24,11 +26,11 @@ $(document).ready(function() {
     }
   });
   
+  
   $('#bounty_board .listview .indent').each(function() {
     var $detail = $(this),
         $item = $detail.prev(),
         $expand = $item.find('.expand');
-    $detail.hide();
     $expand.toggle(function() {
       $detail.slideDown('fast');
       $expand.text('[-]');

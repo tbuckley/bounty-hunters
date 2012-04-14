@@ -28,7 +28,7 @@
           {{each(i,player) players}}
             <li>
               <div class="expand">[+]</div>
-              <div class="name">${player.name} <span class="score">(${player.points})</span></div>
+              <div class="name">${player.displayName} <span class="score">(${player.points})</span></div>
               <div class="action">
                 {{if user}}
                   {{if player.username == user.username}}
@@ -84,7 +84,7 @@
             </div>
             <div class="name">${user.name}</div>
             <div class="score">${user.points} Points</div>
-            <div class="hunters">${user.numHunters} Hunter{{if user.numHunters != 1}}s{{/if}}</div>
+            <div class="hunters">${user.numHunters} {{if user.numHunters == 1}}Person{{else}}People{{/if}} Hunting You</div>
             <hr class="clear-bar" />
           </div>
       
@@ -118,10 +118,14 @@
               <img src="${user.target.profile_photo}" />
             </div>
             <div class="action">
-              <form method="post" action="/report-kill">
-                <input type="hidden" name="killee_uid" value="${user.target._id.toHexString()}" />
-                <input type="submit" class="button red" name="op" value="Report Kill" />
-              </form>
+              {{if !user.timeToKill}}
+                <form method="post" action="/report-kill">
+                  <input type="hidden" name="killee_uid" value="${user.target._id.toHexString()}" />
+                  <input type="submit" class="button red" name="op" value="Report Kill" />
+                </form>
+              {{else}}
+                ${user.timeToKill} Remaining
+              {{/if}}
             </div>
             <div class="name">${user.target.name}</div>
             <div class="bounty">${user.target.bounty}pt Bounty</div>

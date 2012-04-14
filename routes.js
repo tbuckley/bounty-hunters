@@ -59,7 +59,6 @@ exports.index = function(req, res, next) {
     },
     messages: function(cb) {
       var m = get_messages(req);
-      console.log("messages", m);
       cb(null, m);
     },
     reports: function(cb) {
@@ -79,7 +78,7 @@ exports.login = function(req, res, next) {
       password = req.param('password');
   _user.getByCredentials(username, password, function(err, user) {
     if(err) {
-      add_message(err);
+      add_message(req, err);
       res.redirect("/");
     } else {
       _user.login(req, user, function() {
@@ -139,7 +138,7 @@ exports.settarget = function(req, res, next) {
   if(req.user) {
     _user.getById(req.param('target_uid'), function(err, doc) {
       if(err || !doc) {
-        add_message("ERROR: Target not found...");
+        add_message(req, "ERROR: Target not found...");
         res.redirect('/');
       } else {
         target.setTarget(req.user, doc, function(err) {
@@ -157,7 +156,7 @@ exports.report_death = function(req, res, next) {
   if(req.user) {
     _user.getByUsername(req.param('username'), function(err, killer) {
       if(err || !killer) {
-        add_message('Error submitting death');
+        add_message(req, 'Error submitting death');
         res.redirect('/');
       } else {
         if(killer.target.username == req.user.username) {
@@ -180,14 +179,21 @@ exports.report_kill = function(req, res, next) {
   if(req.user) {
     _user.getById(req.param('killee_uid'), function(err, killee) {
       if(err || !killee) {
-        add_message('Error submitting kill');
+        add_message(req, 'Error submitting kill');
         res.redirect('/');
       } else {
         if(req.user.target.username == killee.username) {
-          reporting.reportKill(req.user, req.user, killee, function(err) {
-            add_message('Reported kill, awaiting confirmation.');
+          if(req.user.timeToKill) {
+            console.log("HERE");
+            add_message(req, 'You cannot kill that person yet.');
             res.redirect('/');
-          });
+          } else {
+            console.log("HERE2", req.user);
+            reporting.reportKill(req.user, req.user, killee, function(err) {
+              add_message(req, 'Reported kill, awaiting confirmation.');
+              res.redirect('/');
+            });
+          }
         } else {
           add_message(req, 'You are not currently hunting that person.');
           res.redirect('/');
@@ -209,11 +215,11 @@ exports.report = function(req, res, next) {
     });
   } else if(op == 'Deny') {
     reporting.cancelReport(req.user, id, function(err) {
-      add_message('Report cancelled');
+      add_message(req, 'Report cancelled');
       res.redirect('/');
     });
   } else {
-    add_message('Invalid command');
+    add_message(req, 'Invalid command');
     res.redirect('/');
   }
 };

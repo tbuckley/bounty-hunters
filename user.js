@@ -4,7 +4,8 @@ var crypto = require('crypto'),
     expose = require('./utils').expose(exports),
     mongo = require('mongodb'),
     points = require('./points'),
-    target = require('./target');
+    target = require('./target'),
+    _ = require('underscore');
 
 var db = null;
 database.notifications.once("open", function() {
@@ -94,6 +95,26 @@ function loadUserData(user, cb) {
     },
     numHunters: function(cb) {
       target.getNumHunters(user, cb);
+    },
+    timeToKill: function(cb) {
+      if(options.getTarget) {
+        target.timeUntilKill(user, function(err, val) {
+          console.log("val", val);
+          cb(err, val);
+        });
+      } else {
+        cb(null, null)
+      }
+    },
+    displayName: function(cb) {
+      if(user.nickname) {
+        var names = user.name.split(' ');
+        var parts = _.flatten([_.first(names), '"'+user.nickname+'"', _.rest(names)]);
+        var displayName = parts.join(" ");
+        cb(null, displayName);
+      } else {
+        cb(null, user.name);
+      }
     }
   }, function(err, results) {
     if(err) {
@@ -103,6 +124,8 @@ function loadUserData(user, cb) {
       user.bounty = Math.ceil(0.25 * results.points);
       user.target = results.target;
       user.numHunters = results.numHunters;
+      user.timeToKill = results.timeToKill;
+      user.displayName = results.displayName;
       cb(null, user);
     }
   });
@@ -156,7 +179,11 @@ function deleteAll(cb) {
 }
 function getAll(cb) {
   db.find({}).toArray(function(err, docs) {
-    async.map(docs, loadUserData, cb);
+    async.map(docs, function(user, cb) {
+      loadUserData(user, {
+        getTarget: false
+      }, cb);
+    }, cb);
   });
 }
 

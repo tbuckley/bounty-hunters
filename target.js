@@ -48,6 +48,7 @@ function setRandomTarget(user, cb) {
 }
 function setTarget(user, target, cb) {
   targets.update({uid: user._id}, {
+    time: (new Date()).getTime(),
     uid: user._id,
     target: target._id
   }, {upsert: true}, cb);
@@ -55,7 +56,7 @@ function setTarget(user, target, cb) {
 function getTarget(user, cb) {
   targets.findOne({uid: user._id}, function(err, doc) {
     if(err || !doc) {
-      cb(err);
+      cb(err || "Target not found");
     } else {
       _user.getById(doc.target, cb, {
         getTarget: false
@@ -63,9 +64,29 @@ function getTarget(user, cb) {
     }
   });
 }
+function timeUntilKill(user, cb) {
+  targets.findOne({uid: user._id}, function(err, doc) {
+    if(err || !doc) {
+      cb(err || "Target not found");
+    } else {
+      console.log("time", doc.time,  ((new Date()).getTime()) - 1000*60*60);
+      if(doc.time) {
+        if(doc.time < (((new Date()).getTime()) - 1000*60*60)) {
+          cb(null, null);
+        } else {
+          var time = 1000*60*60 - ((new Date()).getTime() - doc.time);
+          console.log("time remaining:", Math.ceil(time / (1000*60))+'min')
+          cb(null, Math.ceil(time / (1000*60))+'min');
+        }
+      } else {
+        cb(null, null);
+      }
+    }
+  });
+}
 function getNumHunters(user, cb) {
   targets.find({target: user._id}).count(cb);
 }
 
-expose(initUser, randomLoop);
+expose(initUser, randomLoop, timeUntilKill);
 expose(setRandomTarget, setTarget, getTarget, getNumHunters);
