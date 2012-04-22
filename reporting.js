@@ -6,6 +6,8 @@ var async = require('async'),
     expose = require('./utils').expose(exports),
     mongo = require('mongodb');
 
+var POINT_PERCENTAGE = 0.333;
+
 var reporting = null;
 database.notifications.once("open", function() {
   database.getCollection("reporting", function(err, collection) {
@@ -31,7 +33,7 @@ function reportKill(reporter, killer, killee, cb) {
     time: (new Date()).getTime(),
     killer: killer._id,
     killee: killee._id,
-    points: Math.ceil(killee.points * 0.25),
+    points: Math.ceil(killee.points * POINT_PERCENTAGE),
     reporter: reporter.username == killer.username ? killer._id : killee._id,
     confirmer: reporter.username == killer.username ? killee._id : killer._id
   }, cb);

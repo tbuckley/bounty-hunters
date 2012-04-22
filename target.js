@@ -69,9 +69,9 @@ function timeUntilKill(user, cb) {
     if(err || !doc) {
       cb(err || "Target not found");
     } else {
-      console.log("time", doc.time,  ((new Date()).getTime()) - 1000*60*60);
+      console.log("time", doc.time,  ((new Date()).getTime()) - 1000*60*15);
       if(doc.time) {
-        if(doc.time < (((new Date()).getTime()) - 1000*60*60)) {
+        if(doc.time < (((new Date()).getTime()) - 1000*60*15)) {
           cb(null, null);
         } else {
           var time = 1000*60*60 - ((new Date()).getTime() - doc.time);

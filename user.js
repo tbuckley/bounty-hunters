@@ -121,7 +121,7 @@ function loadUserData(user, cb) {
       cb(err);
     } else {
       user.points = results.points;
-      user.bounty = Math.ceil(0.25 * results.points);
+      user.bounty = Math.ceil(0.333 * results.points);
       user.target = results.target;
       user.numHunters = results.numHunters;
       user.timeToKill = results.timeToKill;

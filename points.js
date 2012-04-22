@@ -6,7 +6,7 @@ var _user = require('./user'),
     dateFormat = require('dateformat');
 
 var INITIAL_POINTS = 4,
-    KILL_PERCENT = 0.25;
+    KILL_PERCENT = 0.333;
 
 var AWARD = 1,
     KILL  = 2;
