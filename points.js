@@ -97,13 +97,14 @@ function award(amt, user, msg, cb) {
   transactions.insert({
     time: (new Date()).getTime(),
     type: AWARD,
+    uid: user._id,
     amount: amt,
     message: msg
   }, function(err, doc) {
     if(err) {
       cb(err);
     } else {
-      addPoints(amt, user);
+      addPoints(amt, user, cb);
     }
   });
 }
@@ -145,6 +146,11 @@ function activity(user, cb) {
                 }));
               });
             }
+          } else if(doc.type == AWARD) {
+            cb(null, template({
+              message: doc.message,
+              time: dateFormat(new Date(doc.time), "h:MMtt m/dd")
+            }));
           }
         }, cb);
       }
