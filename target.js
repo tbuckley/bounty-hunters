@@ -74,7 +74,7 @@ function timeUntilKill(user, cb) {
         if(doc.time < (((new Date()).getTime()) - 1000*60*15)) {
           cb(null, null);
         } else {
-          var time = 1000*60*60 - ((new Date()).getTime() - doc.time);
+          var time = 1000*60*15 - ((new Date()).getTime() - doc.time);
           console.log("time remaining:", Math.ceil(time / (1000*60))+'min')
           cb(null, Math.ceil(time / (1000*60))+'min');
         }
