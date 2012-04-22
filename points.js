@@ -44,7 +44,7 @@ function getPoints(user, cb) {
 /* Helper functions */
 
 function addPoints(amt, user, cb) {
-  points.update({_id: user._id}, {$inc: {points: amt}}, cb);
+  points.update({uid: user._id}, {$inc: {points: amt}}, cb);
 }
 function transferPoints(amt, src, dst, cb) {
   async.parallel([
