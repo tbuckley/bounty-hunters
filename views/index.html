@@ -114,22 +114,26 @@
       
           <h3>Your Target</h3>
           <div class="target">
-            <div class="image">
-              <img src="${user.target.profile_photo}" />
-            </div>
-            <div class="action">
-              {{if !user.timeToKill}}
-                <form method="post" action="/report-kill">
-                  <input type="hidden" name="killee_uid" value="${user.target._id.toHexString()}" />
-                  <input type="submit" class="button red" name="op" value="Report Kill" />
-                </form>
-              {{else}}
-                ${user.timeToKill} Remaining
-              {{/if}}
-            </div>
-            <div class="name">${user.target.name}</div>
-            <div class="bounty">${user.target.bounty}pt Bounty</div>
-            <div class="hunters">${user.target.numHunters - 1} Other Hunter{{if (user.target.numHunters - 1) != 1}}s{{/if}}</div>
+            {{if user.target.playing}}
+              <div class="image">
+                <img src="${user.target.profile_photo}" />
+              </div>
+              <div class="action">
+                {{if !user.timeToKill}}
+                  <form method="post" action="/report-kill">
+                    <input type="hidden" name="killee_uid" value="${user.target._id.toHexString()}" />
+                    <input type="submit" class="button red" name="op" value="Report Kill" />
+                  </form>
+                {{else}}
+                  ${user.timeToKill} Remaining
+                {{/if}}
+              </div>
+              <div class="name">${user.target.name}</div>
+              <div class="bounty">${user.target.bounty}pt Bounty</div>
+              <div class="hunters">${user.target.numHunters - 1} Other Hunter{{if (user.target.numHunters - 1) != 1}}s{{/if}}</div>
+            {{else}}
+            No target
+            {{/if}}
             <hr class="clear-bar" />
           </div>
       

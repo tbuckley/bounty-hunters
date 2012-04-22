@@ -157,5 +157,10 @@ function activity(user, cb) {
     });
 }
 
+function numKills(user, cb) {
+  transactions.find({killer: user._id}).count(cb);
+}
+
 expose(initUser, getPoints);
 expose(kill, award, activity, transferPoints, transferPercentage, addTransaction);
+expose(numKills);

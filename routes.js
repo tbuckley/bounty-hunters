@@ -38,7 +38,7 @@ function generate_password() {
 exports.index = function(req, res, next) {
   async.parallel({
     players: function(cb) {
-      _user.getAll(function(err, users) {
+      _user.getAllPlaying(function(err, users) {
         if(err) {
           cb(err);
         } else {

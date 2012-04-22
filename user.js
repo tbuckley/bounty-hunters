@@ -187,6 +187,24 @@ function getAll(cb) {
   });
 }
 
+function getAllPlaying(cb) {
+  db.find({playing: true}).toArray(function(err, docs) {
+    async.map(docs, function(user, cb) {
+      loadUserData(user, {
+        getTarget: false
+      }, cb);
+    }, cb);
+  });
+}
+function setPlaying(u, playing, cb) {
+  db.update({_id: u._id}, {$set: {playing: playing}}, function(err, update) {
+    console.log("Update:", update);
+    cb(err);
+  });
+}
+
 expose(middleware, login);
 expose(create, getById, getByUsername, getByCredentials, usernameExists);
 expose(getAll, deleteAll);
+
+expose(getAllPlaying, setPlaying);
