@@ -43,7 +43,7 @@ function middleware(req, res, next) {
 function create(properties, cb) {
   async.waterfall([
     function(cb) {
-      if(!properties.username || !properties.username) {
+      if(!properties.username || !properties.password) {
         cb("Missing username/password!");
       } else {
         properties['username'] = properties['username'].toLowerCase();
